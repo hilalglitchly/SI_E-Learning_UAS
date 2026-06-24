@@ -1,0 +1,1371 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&display=swap');
+
+/* ========================================
+   LIGHT MODE (DEFAULT VARIABLES)
+   ======================================== */
+:root {
+  --background: #F4F4F0;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --primary: #FF4C4C; /* Merah terang */
+  --primary-foreground: #ffffff;
+  --secondary: #FFD700; /* Kuning khas E-learning */
+  --secondary-foreground: #000000;
+  --accent: #0066ff; /* Biru aksi */
+  --accent-foreground: #ffffff;
+  --border: #000000;
+  --muted: #e0e0e0;
+  --muted-foreground: #333333;
+  
+  --radius: 0px;
+  --shadow-offset-x: 5px;
+  --shadow-offset-y: 5px;
+  --shadow-blur: 0px;
+  --shadow-color: #000000;
+  --border-width: 3px;
+  --sidebar-width: 260px;
+}
+
+/* ========================================
+   DARK MODE VARIABLES
+   ======================================== */
+html.dark-mode {
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card: #2d2d2d;
+  --card-foreground: #ffffff;
+  --primary: #ff6666;
+  --primary-foreground: #000000;
+  --secondary: #cccc00; /* Kuning diredupkan */
+  --secondary-foreground: #000000;
+  --accent: #3399ff;
+  --accent-foreground: #000000;
+  --border: #ffffff;
+  --muted: #404040;
+  --muted-foreground: #cccccc;
+  
+  --shadow-color: #ffffff;
+}
+
+/* ========================================
+   BASE RESETS
+   ======================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--background);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--foreground);
+    position: relative;
+    z-index: 0;
+}
+html.theme-transition body,
+html.theme-transition .neo-box,
+html.theme-transition .neo-card,
+html.theme-transition .neo-navbar {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR
+   ======================================== */
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: var(--background);
+    border-left: var(--border-width) solid var(--border);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border: var(--border-width) solid var(--border);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* ========================================
+   DASHED GRID BACKGROUND EFFECT
+   ======================================== */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    
+    /* Garis dasar grid */
+    background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 0;
+    
+    /* Efek garis putus-putus menggunakan mask */
+    -webkit-mask-image: 
+        repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px);
+    -webkit-mask-composite: source-in;
+    
+    mask-image: 
+        repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+        repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px);
+    mask-composite: intersect;
+}
+
+/* Penyesuaian grid untuk mode gelap */
+body.dark-mode::before {
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+}
+
+/* ========================================
+   AUTH LAYOUT (Login page)
+   ======================================== */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* ========================================
+   TOP NAVIGATION (NAVBAR)
+   ======================================== */
+.neo-navbar {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.neo-navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--foreground);
+    text-decoration: none;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.neo-navbar-menu {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    align-items: center;
+    height: 100%;
+}
+
+.neo-navbar-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--foreground);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border: var(--border-width) solid transparent;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.neo-navbar-menu a:hover, .neo-navbar-menu a.active {
+    background-color: var(--muted);
+    color: var(--foreground);
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+    transform: translate(-4px, -4px);
+}
+
+.neo-navbar-menu a i {
+    margin-right: 8px;
+    font-size: 1.25em;
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+}
+
+.neo-navbar-menu a:hover i {
+    transform: scale(1.2) rotate(-8deg);
+}
+
+.neo-navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ========================================
+   MAIN LAYOUT
+   ======================================== */
+.neo-layout-container {
+    padding: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 120px);
+}
+
+.neo-layout-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2.5rem;
+}
+
+/* ========================================
+   NEO BRUTALISM BASE COMPONENTS
+   ======================================== */
+.neo-box {
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+    transition: all 0.15s ease-in-out;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+.neo-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.neo-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--foreground);
+}
+
+.neo-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: var(--card);
+    color: var(--foreground);
+    outline: none;
+}
+
+.neo-input:focus {
+    box-shadow: 4px 4px 0px var(--accent);
+    border-color: var(--accent);
+    transform: translate(-2px, -2px);
+}
+
+.neo-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.neo-btn:hover {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    transform: translate(-4px, -4px);
+    box-shadow: calc(var(--shadow-offset-x) + 4px) calc(var(--shadow-offset-y) + 4px) 0px var(--shadow-color);
+}
+
+.neo-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.brutal-hover {
+    transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+.brutal-hover:hover {
+    transform: translate(4px, 4px) !important;
+    box-shadow: 0px 0px 0px var(--border) !important;
+}
+
+/* ========================================
+   SUMMARY CARDS (Dashboard)
+   ======================================== */
+.neo-summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.neo-summary-card {
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--card);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.neo-summary-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.neo-summary-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    color: var(--foreground);
+}
+
+.neo-summary-label {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--foreground);
+}
+
+/* ========================================
+   GRID & CLASS CARDS
+   ======================================== */
+.neo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 100%;
+}
+
+.neo-card {
+    background-color: var(--card);
+    color: var(--card-foreground);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+    transition: all 0.15s ease-in-out;
+    text-decoration: none;
+}
+
+a.neo-card:hover {
+    box-shadow: 10px 10px 0px var(--shadow-color);
+    transform: translate(-6px, -6px);
+    border-color: var(--primary);
+}
+
+.neo-card-header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.neo-card-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+}
+
+.neo-card-subtitle {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+}
+
+.neo-card-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: 0.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--foreground);
+    opacity: 0.9;
+    /* Limit teks maksimal 3 baris agar tinggi card rapi */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.neo-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.neo-card-progress {
+    border-top: 2px dashed var(--border);
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+/* ========================================
+   TAB NAVIGATION
+   ======================================== */
+.neo-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: var(--border-width) solid var(--border);
+}
+
+.neo-tab-btn {
+    padding: 1rem 2rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: var(--card);
+    color: var(--card-foreground);
+    border: var(--border-width) solid var(--border);
+    border-bottom: none;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
+    transition: all 0.1s ease-in-out;
+}
+
+.neo-tab-btn:hover {
+    background-color: var(--muted);
+}
+
+.neo-tab-btn.active {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    font-weight: 800;
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+}
+
+.neo-tab-content {
+    display: none;
+}
+
+.neo-tab-content.active {
+    display: block;
+}
+
+/* ========================================
+   RESPONSIVE (MOBILE)
+   ======================================== */
+@media (max-width: 1024px) {
+    .neo-layout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .neo-navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .neo-navbar-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .neo-navbar-menu a {
+        padding: 0.5rem;
+    }
+    
+    .neo-layout-container {
+        padding: 1.5rem 1rem;
+        margin-top: 140px;
+    }
+
+    .neo-tabs {
+        flex-wrap: wrap;
+    }
+
+    .neo-tab-btn {
+        flex: 1;
+        min-width: 100px;
+        text-align: center;
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* ========================================
+   NEO BRUTALISM ANIMATIONS & INTERACTIONS
+   ======================================== */
+
+/* Animasi Masuk (Pop In) membal untuk Container & Card */
+@keyframes brutalPop {
+    0% { 
+        transform: scale(0.9) translateY(20px); 
+        opacity: 0; 
+        box-shadow: 0px 0px 0px var(--shadow-color);
+    }
+    100% { 
+        transform: scale(1) translateY(0); 
+        opacity: 1; 
+        box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-color);
+    }
+}
+
+/* Animasi Turun (Slide Down) untuk Navbar */
+@keyframes slideDownNavbar {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0); }
+}
+
+/* Terapkan animasi saat halaman dimuat */
+.neo-container, 
+.neo-card, 
+.neo-summary-card, 
+.neo-alert-success,
+.neo-alert-error {
+    animation: brutalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Neo Brutalism Alerts */
+.neo-alert-success {
+    background-color: #a8e6cf;
+    color: #000;
+    padding: 1rem 1.5rem;
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0px var(--shadow-color);
+    font-weight: 800;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.neo-alert-error {
+    background-color: #ff6b6b;
+    color: #000;
+    padding: 1rem 1.5rem;
+    border: var(--border-width) solid var(--border);
+    box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) 0px var(--shadow-color);
+    font-weight: 800;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.neo-navbar {
+    animation: slideDownNavbar 0.3s ease-out forwards;
+}
+
+/* Efek Klik Fisik (Tactile Click) yang Sangat Penting! */
+.neo-btn:active, 
+.neo-navbar-btn:active, 
+.neo-logout-btn:active, 
+a.neo-card:active,
+.neo-tab-btn:active {
+    transform: translate(var(--shadow-offset-x), var(--shadow-offset-y)) !important;
+    box-shadow: 0px 0px 0px var(--shadow-color) !important;
+    transition: all 0.05s ease-in-out;
+}
+
+/* ========================================
+   LOGIN PAGE ANIMATIONS
+   ======================================== */
+
+/* --- Keyframes --- */
+
+/* Card masuk dari bawah dengan bounce */
+@keyframes loginCardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.92);
+        box-shadow: 0px 0px 0px var(--shadow-color);
+    }
+    60% {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 10px 10px 0px var(--shadow-color);
+    }
+    80% {
+        transform: translateY(4px) scale(0.99);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        box-shadow: 8px 8px 0px var(--shadow-color);
+    }
+}
+
+/* Judul slide dari kiri */
+@keyframes loginTitleSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+        clip-path: inset(0 0% 0 0);
+    }
+}
+
+/* Form group muncul dari bawah satu per satu */
+@keyframes loginFieldFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tombol muncul dengan pop */
+@keyframes loginBtnPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        box-shadow: 0px 0px 0px var(--shadow-color);
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 5px 5px 0px var(--shadow-color);
+    }
+}
+
+/* Garis bawah input saat fokus */
+@keyframes inputFocusLine {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}
+
+/* Pulse pada tombol MASUK */
+@keyframes btnPulse {
+    0%, 100% {
+        box-shadow: 5px 5px 0px var(--shadow-color);
+    }
+    50% {
+        box-shadow: 5px 5px 0px var(--shadow-color), 0 0 0 6px rgba(0, 102, 255, 0.15);
+    }
+}
+
+/* Shimmer background pada auth-wrapper */
+@keyframes bgShimmer {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* Shake saat error */
+@keyframes loginShake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-8px); }
+    30% { transform: translateX(8px); }
+    45% { transform: translateX(-6px); }
+    60% { transform: translateX(6px); }
+    75% { transform: translateX(-3px); }
+    90% { transform: translateX(3px); }
+}
+
+/* --- Terapkan Animasi --- */
+
+/* Background auth-wrapper animasi subtle */
+.auth-wrapper {
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 40px,
+            rgba(0, 102, 255, 0.025) 40px,
+            rgba(0, 102, 255, 0.025) 80px
+        ),
+        var(--background);
+    background-size: 200% 200%;
+    animation: bgShimmer 12s ease-in-out infinite;
+}
+
+/* Card login */
+.auth-wrapper .neo-container {
+    animation: loginCardEntrance 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Judul login */
+.auth-wrapper .neo-title {
+    animation: loginTitleSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+/* Field username muncul duluan */
+.auth-wrapper .neo-form-group:nth-child(1) {
+    animation: loginFieldFadeUp 0.5s ease-out 0.5s both;
+}
+
+/* Field password muncul setelah username */
+.auth-wrapper .neo-form-group:nth-child(2) {
+    animation: loginFieldFadeUp 0.5s ease-out 0.65s both;
+}
+
+/* Tombol MASUK */
+.auth-wrapper .neo-btn {
+    animation: loginBtnPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+}
+
+/* Pulse otomatis pada tombol setelah semua muncul */
+.auth-wrapper .neo-btn:not(:hover):not(:active) {
+    animation: loginBtnPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both,
+               btnPulse 2.5s ease-in-out 1.5s infinite;
+}
+
+/* --- Input Field Interaksi --- */
+
+/* Wrapper input saat fokus: naik sedikit + border berubah warna */
+.auth-wrapper .neo-form-group div:focus-within {
+    transform: translate(-3px, -3px);
+    border-color: var(--accent) !important;
+    box-shadow: 7px 7px 0px var(--accent) !important;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Transisi normal saat tidak fokus */
+.auth-wrapper .neo-form-group div {
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Icon berubah warna saat fokus */
+.auth-wrapper .neo-form-group div:focus-within i {
+    color: var(--accent) !important;
+    transform: scale(1.15) rotate(-5deg);
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.auth-wrapper .neo-form-group div i {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* --- Hover pada tombol MASUK --- */
+.auth-wrapper .neo-btn:hover {
+    transform: translate(-3px, -3px) !important;
+    box-shadow: 8px 8px 0px var(--shadow-color) !important;
+    background-color: var(--accent) !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+    animation: none !important;
+}
+
+/* --- Error shake --- */
+.auth-wrapper .neo-container.shake {
+    animation: loginShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+}
+
+/* --- Pesan error animasi --- */
+.auth-wrapper .neo-error {
+    animation: loginFieldFadeUp 0.4s ease-out forwards;
+    border-left: 4px solid var(--primary);
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 76, 76, 0.1);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+            /* ===== NEO BRUTALISM - PIMPINAN DASHBOARD ===== */
+            .pimpinan-wrapper {
+                font-family: 'Inter', 'Segoe UI', sans-serif;
+            }
+
+            .pimpinan-banner {
+                background-color: #6C3CE1;
+                color: #FFFFFF;
+                padding: 2rem 2.5rem;
+                border: 3px solid #000;
+                box-shadow: 8px 8px 0px #000;
+                margin-bottom: 2rem;
+            }
+            .pimpinan-banner h1 {
+                font-size: 2.2rem;
+                margin-bottom: 0.5rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: -1px;
+            }
+            .pimpinan-banner p {
+                font-size: 1.1rem;
+                margin: 0;
+                font-weight: 600;
+                opacity: 0.9;
+            }
+
+            .pimpinan-stats-row {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2.5rem;
+            }
+
+            .pimpinan-stat-card {
+                background-color: #FFFFFF;
+                border: 3px solid #000;
+                box-shadow: 6px 6px 0px #000;
+                padding: 1.5rem;
+                text-align: center;
+                transition: transform 0.15s, box-shadow 0.15s;
+                position: relative;
+                overflow: hidden;
+            }
+            .pimpinan-stat-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 5px;
+            }
+            .pimpinan-stat-card:nth-child(1)::before { background-color: #FF6B6B; }
+            .pimpinan-stat-card:nth-child(2)::before { background-color: #4ECDC4; }
+            .pimpinan-stat-card:nth-child(3)::before { background-color: #FFE66D; }
+            .pimpinan-stat-card:nth-child(4)::before { background-color: #6C3CE1; }
+
+            .pimpinan-stat-card:hover {
+                transform: translate(-3px, -3px);
+                box-shadow: 9px 9px 0px #000;
+            }
+            .pimpinan-stat-icon {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+            .pimpinan-stat-value {
+                font-size: 3rem;
+                font-weight: 900;
+                color: #000;
+                line-height: 1;
+                margin-bottom: 0.3rem;
+            }
+            .pimpinan-stat-label {
+                font-size: 0.95rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #555;
+                letter-spacing: 0.5px;
+            }
+
+            /* Tabel Laporan */
+            .pimpinan-section-title {
+                font-size: 1.8rem;
+                text-transform: uppercase;
+                font-weight: 900;
+                color: #000;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 4px solid #000;
+                display: inline-block;
+            }
+
+            .pimpinan-table-wrapper {
+                border: 3px solid #000;
+                box-shadow: 6px 6px 0px #000;
+                overflow-x: auto;
+                margin-bottom: 2rem;
+                background-color: #FFF;
+            }
+            .pimpinan-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .pimpinan-table thead th {
+                padding: 1rem 1.2rem;
+                background-color: #6C3CE1;
+                color: #FFF;
+                font-weight: 800;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+                text-align: left;
+                border-bottom: 3px solid #000;
+            }
+            .pimpinan-table tbody td {
+                padding: 0.9rem 1.2rem;
+                border-bottom: 2px solid #E0E0E0;
+                font-weight: 600;
+                font-size: 0.95rem;
+                color: #222;
+            }
+            .pimpinan-table tbody tr:hover {
+                background-color: #F3EEFF;
+            }
+            .pimpinan-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .pimpinan-badge {
+                display: inline-block;
+                padding: 0.25rem 0.7rem;
+                border: 2px solid #000;
+                font-weight: 800;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                background-color: #FFE66D;
+            }
+
+            /* Tombol Cetak */
+            .pimpinan-print-area {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 1.5rem;
+                gap: 1rem;
+            }
+            .pimpinan-btn-print {
+                background-color: #FF6B6B;
+                color: #FFF;
+                border: 3px solid #000;
+                box-shadow: 5px 5px 0px #000;
+                padding: 0.9rem 2rem;
+                font-size: 1.1rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                cursor: pointer;
+                font-family: inherit;
+                transition: transform 0.1s, box-shadow 0.1s;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .pimpinan-btn-print:hover {
+                transform: translate(-2px, -2px);
+                box-shadow: 7px 7px 0px #000;
+            }
+            .pimpinan-btn-print:active {
+                transform: translate(3px, 3px);
+                box-shadow: 2px 2px 0px #000;
+            }
+
+            /* Footer Laporan (hanya muncul saat print) */
+            .pimpinan-print-footer {
+                display: none;
+            }
+
+            /* ===== @MEDIA PRINT ===== */
+            @media print {
+                /* Sembunyikan elemen yang tidak perlu dicetak */
+                .neo-navbar,
+                .pimpinan-btn-print,
+                .pimpinan-print-area,
+                .neo-logout-btn,
+                .neo-navbar-user,
+                nav {
+                    display: none !important;
+                }
+
+                /* Reset styling agar bersih di kertas */
+                body {
+                    background: #FFF !important;
+                    color: #000 !important;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+
+                .neo-main-content {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+
+                .pimpinan-banner {
+                    box-shadow: none !important;
+                    border: 2px solid #000 !important;
+                    background-color: #6C3CE1 !important;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+
+                .pimpinan-stat-card {
+                    box-shadow: none !important;
+                    border: 2px solid #000 !important;
+                    break-inside: avoid;
+                }
+
+                .pimpinan-table-wrapper {
+                    box-shadow: none !important;
+                    border: 2px solid #000 !important;
+                }
+
+                .pimpinan-table thead th {
+                    background-color: #6C3CE1 !important;
+                    color: #FFF !important;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+
+                .pimpinan-stat-card:hover {
+                    transform: none;
+                }
+
+                /* Tampilkan footer cetak */
+                .pimpinan-print-footer {
+                    display: block !important;
+                    margin-top: 3rem;
+                    padding-top: 1.5rem;
+                    border-top: 2px solid #000;
+                    text-align: center;
+                    font-size: 0.9rem;
+                    color: #555;
+                }
+
+                @page {
+                    margin: 1.5cm;
+                }
+            }
+
+            /* Dark mode compatibility */
+            .dark-mode .pimpinan-stat-card {
+                background-color: #2A2A2A;
+            }
+            .dark-mode .pimpinan-stat-value {
+                color: #FFF;
+            }
+            .dark-mode .pimpinan-stat-label {
+                color: #BBB;
+            }
+            .dark-mode .pimpinan-section-title {
+                color: #FFF;
+                border-bottom-color: #FFF;
+            }
+            .dark-mode .pimpinan-table-wrapper {
+                background-color: #2A2A2A;
+                border-color: #FFF;
+                box-shadow: 6px 6px 0px #FFF;
+            }
+            .dark-mode .pimpinan-table thead th {
+                border-bottom-color: #FFF;
+            }
+            .dark-mode .pimpinan-table tbody td {
+                color: #EEE;
+                border-bottom-color: #444;
+            }
+            .dark-mode .pimpinan-table tbody tr:hover {
+                background-color: #3A2E5A;
+            }
+            .dark-mode .pimpinan-stat-card {
+                border-color: #FFF;
+                box-shadow: 6px 6px 0px #FFF;
+            }
+            .dark-mode .pimpinan-banner {
+                border-color: #FFF;
+                box-shadow: 8px 8px 0px #FFF;
+            }
+            .dark-mode .pimpinan-btn-print {
+                border-color: #FFF;
+                box-shadow: 5px 5px 0px #FFF;
+            }
+
+
+/* ========================================
+   NEO ALERT COMPONENT (Custom)
+   ======================================== */
+#neo-toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none;
+}
+
+.neo-toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.2rem 1.8rem;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px #000;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    pointer-events: auto;
+    
+    transform: translateY(150%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+}
+
+.neo-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.neo-toast.hide {
+    transform: translateY(150%);
+    opacity: 0;
+}
+
+.neo-toast-success {
+    background-color: #a8e6cf;
+    color: #000;
+}
+.neo-toast-error {
+    background-color: #ff6b6b;
+    color: #000;
+}
+.neo-toast-warning {
+    background-color: #ffd900;
+    color: #000;
+}
+
+.neo-toast-icon {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Modal Overlay */
+.neo-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.neo-modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Box */
+.neo-modal-box {
+    background-color: var(--card);
+    width: 90%;
+    max-width: 450px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.neo-modal-box.show {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.neo-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.neo-modal-icon {
+    font-size: 4rem;
+    color: var(--primary);
+}
+
+.neo-modal-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--foreground);
+    line-height: 1.2;
+}
+
+.neo-modal-body p {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+.neo-modal-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.neo-btn-cancel {
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+}
+
+.neo-btn-confirm {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+}
+
+/* Dark mode overrides if necessary */
+.dark-mode .neo-toast-success {
+    background-color: #2e8b57;
+    color: #fff;
+}
+.dark-mode .neo-toast-error {
+    background-color: #cc0000;
+    color: #fff;
+}
+
+/* ========================================
+   QUILL.JS EDITOR NEO BRUTALISM STYLES
+   ======================================== */
+.ql-toolbar.ql-snow {
+    border: 3px solid var(--border) !important;
+    border-bottom: none !important;
+    background-color: var(--card);
+    border-radius: 0 !important;
+    font-family: inherit !important;
+}
+
+.ql-container.ql-snow {
+    border: 3px solid var(--border) !important;
+    background-color: var(--card);
+    border-radius: 0 !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    box-shadow: 4px 4px 0px var(--border);
+    transition: all 0.15s ease-in-out;
+}
+
+.ql-container.ql-snow:focus-within {
+    box-shadow: 0px 0px 0px var(--border);
+    transform: translate(4px, 4px);
+}
+
+/* ========================================
+   NEO BRUTALISM DASHBOARD INNER STYLES
+   ======================================== */
+.neo-summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.neo-summary-card {
+    background-color: var(--card);
+    border: 4px solid var(--border);
+    box-shadow: 6px 6px 0px var(--border);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.neo-summary-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0px var(--border);
+}
+
+.neo-summary-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.neo-summary-value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.neo-summary-label {
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--foreground);
+    letter-spacing: 0.5px;
+}
+
+.neo-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 3rem;
+}
+
+.neo-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 4px solid var(--border);
+    background-color: var(--card);
+    box-shadow: 8px 8px 0px var(--border);
+}
+
+.neo-table th {
+    padding: 1.2rem 1rem;
+    background-color: var(--secondary);
+    color: #000;
+    border-bottom: 4px solid var(--border);
+    border-right: 3px solid var(--border);
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.neo-table th:last-child {
+    border-right: none;
+}
+
+.neo-table td {
+    padding: 1rem;
+    border-bottom: 3px solid var(--border);
+    border-right: 3px solid var(--border);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.neo-table td:last-child {
+    border-right: none;
+}
+
+.neo-table tbody tr:hover {
+    background-color: var(--muted);
+}
+
+/* Custom Cursor CSS (Global) */
+body, a, button, .brutal-hover, .neo-btn, select, label { cursor: none !important; }
+#custom-cursor {
+    position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+    border: 4px solid #000; border-radius: 50%;
+    background-color: #FFD700;
+    transform: translate(-50%, -50%);
+    pointer-events: none; z-index: 999999;
+    transition: transform 0.1s ease, background-color 0.1s ease, border-radius 0.1s ease;
+    box-shadow: 4px 4px 0px #000;
+}
+#custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: #FF4C4C;
+    border-radius: 0;
+}
