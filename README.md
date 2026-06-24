@@ -69,9 +69,18 @@ Ringkasan arsitektur relasional pada *back-end*:
 
 ---
 
-### Instalasi Repositori
-```bash
-git clone https://github.com/USERNAME/SI_ELearning_UAS.git
-# Buat database db_elearning dan import database.sql
-# Setting akun koneksi di includes/koneksi.php
-```
+## 💻 Panduan Instalasi (Localhost)
+
+1. Tarik / *Clone* repositori ini ke folder `htdocs` (XAMPP) atau `www` (Laragon) Anda.
+   ```bash
+   git clone https://github.com/hilalglitchly/SI_E-Learning_UAS.git
+   ```
+2. Buat *database* di MySQL/MariaDB dengan nama **db_elearning**.
+3. Import berkas `database.sql` yang disertakan di repositori ini ke dalam *database* yang baru dibuat.
+4. Sesuaikan konfigurasi *username* dan *password database* di dalam `includes/koneksi.php` (Secara *default* menggunakan *root* dan *password* kosong).
+5. Akses aplikasi melalui *browser* di `http://localhost/SI_ELearning_UAS/`.
+
+> Catatan: Gunakan *username* **admin** dan *password* **12345** untuk masuk sebagai Administrator.
+
+---
+*Proyek ini dirancang secara eksklusif untuk evaluasi akademik Ujian Akhir Semester.*
