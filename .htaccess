@@ -1,0 +1,12 @@
+# Disable directory listing (Mencegah orang melihat daftar file dalam sebuah folder)
+Options -Indexes
+
+# Melindungi folder .git dan isinya dari akses publik
+<DirectoryMatch "^\.git">
+    Require all denied
+</DirectoryMatch>
+
+# Mencegah akses langsung ke file konfigurasi yang berawalan titik (seperti .env, .htaccess, .gitignore)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
