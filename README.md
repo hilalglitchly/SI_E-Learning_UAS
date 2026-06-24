@@ -51,9 +51,9 @@ Alih-alih menggunakan tombol `<input type="file">` yang sempit dan usang, sistem
 Setiap aksi asinkron di sistem (menambah balasan forum, gagal *login*, berhasil menyimpan profil) langsung dikomunikasikan via `NeoToast` (notifikasi mengambang di pojok layar).
 * **UX Rationale**: Menerapkan heuristik Nielsen: *Visibility of System Status*. Manusia sangat bergantung pada timbal-balik cepat. *Toast* yang muncul selama 3 detik lalu menghilang sendiri mencegah *user* melakukan *double-submit* karena panik.
 
-### D. Asynchronous Action (Seamless Interaction)
-Penghapusan notifikasi atau pengiriman komentar di Forum tidak memerlukan *refresh* halaman secara keseluruhan.
-* **UX Rationale**: *Refresh* halaman merusak *mental mapping* pengguna terhadap halaman web. Dengan AJAX (`fetch API`), saat tombol "X" pada notifikasi diklik, *node* elemen di-*destroy* dari DOM, hitungan (badge) pada *navbar* otomatis berkurang secara matematis, dan *database* diperbarui di *background*. Hal ini menciptakan pengalaman sehalus aplikasi *mobile native*.
+### D. WYSIWYG Rich Text Editor (Forgiving Text Input)
+Integrasi editor teks kaya (QuillJS) pada pembuatan materi dan balasan forum diskusi.
+* **UX Rationale**: Menghilangkan hambatan teknis (*technical barrier*). Pengguna (khususnya Pengajar non-IT) tidak perlu menghafal tag HTML atau *markdown* untuk menebalkan teks atau membuat *list*. Apa yang mereka lihat di layar editor adalah apa yang akan mereka dapatkan (*What You See Is What You Get*).
 
 ### E. Native Dark Mode (Aksesibilitas)
 * **UX Rationale**: Mencegah kelelahan mata (*Eye Strain*). Mode gelap diatur menggunakan *LocalStorage* agar prevensi tetap tersimpan saat navigasi halaman. Skrip pengecekan diletakkan secara terisolasi sebelum *render body* demi mencegah *Flash of Unstyled Content (FOUC)*—di mana layar berkedip putih sebelum berubah gelap—yang sangat mengganggu UX.
