@@ -86,6 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+    <!-- Tombol Kembali -->
+    <a href="index.php" class="brutal-hover" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-weight: 800; font-size: 1.1rem; color: var(--foreground); display: flex; align-items: center; gap: 0.5rem; border: 3px solid var(--border); padding: 6px 12px; background: var(--card); z-index: 1000; box-shadow: 3px 3px 0px var(--shadow-color);">
+        <i class='bx bx-arrow-back'></i> Kembali
+    </a>
     <!-- Dark Mode Toggle -->
     <button id="theme-toggle" onclick="toggleDarkMode()" style="position: absolute; top: 20px; right: 20px; padding: 8px; font-size: 1.2rem; line-height: 1; background-color: var(--card); border: 3px solid var(--border); box-shadow: 3px 3px 0px var(--shadow-color); color: var(--foreground); z-index: 1000; cursor: pointer;">
         <i class='bx bxs-moon' id='theme-icon'></i>
