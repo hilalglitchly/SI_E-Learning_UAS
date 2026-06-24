@@ -10,7 +10,7 @@ Sistem ini menolak keras desain antarmuka *corporate* (seperti Material Design) 
 
 ---
 
-## 1. Konsep Multimedia (Desain Visual & Estetika)
+## 1. Multimedia (Desain Visual & Estetika)
 Fokus pada elemen multimedia meliputi pemilihan tema, hierarki tipografi, komposisi warna, hingga *micro-animations*.
 
 ### A. Tema Visual: Neo-Brutalism
