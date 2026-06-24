@@ -193,7 +193,7 @@ $balasanList = $stmtBalasan->fetchAll();
             </div>
             
             <div style="font-size: 1.1rem; line-height: 1.6; font-weight: 500;">
-                <div class="ql-editor-content"><?= strip_tags($diskusiInfo['isi_diskusi'], '<p><br><b><strong><i><em><u><ul><ol><li><a><img><h1><h2><h3><h4><h5><h6><blockquote><pre><code>') ?></div>
+                <div class="ql-editor-content"><?= sanitize_rich_text($diskusiInfo['isi_diskusi']) ?></div>
             </div>
         </div>
 
@@ -214,7 +214,7 @@ $balasanList = $stmtBalasan->fetchAll();
                             </div>
                         </div>
                         <div class="ql-editor-content" style="line-height: 1.5; font-weight: 500;">
-                            <?= strip_tags($balasan['isi_balasan'], '<p><br><b><strong><i><em><u><ul><ol><li><a><img><h1><h2><h3><h4><h5><h6><blockquote><pre><code>') ?>
+                            <?= sanitize_rich_text($balasan['isi_balasan']) ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

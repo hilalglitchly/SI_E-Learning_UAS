@@ -884,7 +884,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <?php foreach ($materiList as $materi): ?>
                     <div class="brutal-card">
                         <div class="feed-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;"><?= htmlspecialchars($materi['judul_materi']) ?></div>
-                        <div style="font-size: 1rem; margin-bottom: 1rem; line-height: 1.5;" class="ql-editor-content"><?= $materi['deskripsi'] ?></div>
+                        <div style="font-size: 1rem; margin-bottom: 1rem; line-height: 1.5;" class="ql-editor-content"><?= sanitize_rich_text($materi['deskripsi']) ?></div>
                         <?php if (!empty($materi['file_materi'])): ?>
                             <div style="margin-bottom: 1rem;">
                                 <a href="uploads/materi/<?= htmlspecialchars($materi['file_materi']) ?>" target="_blank" class="btn-accent" style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.9rem;">📥 Unduh File</a>
@@ -951,7 +951,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <?php foreach ($tugasList as $tugas): ?>
                     <div class="brutal-card" style="border-left: 10px solid var(--primary);">
                         <div class="feed-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;"><?= htmlspecialchars($tugas['judul_tugas']) ?></div>
-                        <div style="font-size: 1rem; margin-bottom: 1rem; line-height: 1.5;" class="ql-editor-content"><?= $tugas['deskripsi'] ?></div>
+                        <div style="font-size: 1rem; margin-bottom: 1rem; line-height: 1.5;" class="ql-editor-content"><?= sanitize_rich_text($tugas['deskripsi']) ?></div>
                         
                         <?php if (!empty($tugas['file_tugas'])): ?>
                             <div style="margin-bottom: 1rem;">
