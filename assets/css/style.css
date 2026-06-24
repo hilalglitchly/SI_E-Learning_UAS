@@ -1353,19 +1353,21 @@ a.neo-card:active,
     background-color: var(--muted);
 }
 
-/* Custom Cursor CSS (Global) */
-body, a, button, .brutal-hover, .neo-btn, select, label { cursor: none !important; }
-#custom-cursor {
-    position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-    border: 4px solid #000; border-radius: 50%;
-    background-color: #FFD700;
-    transform: translate(-50%, -50%);
-    pointer-events: none; z-index: 999999;
-    transition: transform 0.1s ease, background-color 0.1s ease, border-radius 0.1s ease;
-    box-shadow: 4px 4px 0px #000;
-}
-#custom-cursor.hover {
-    transform: translate(-50%, -50%) scale(1.5);
-    background-color: #FF4C4C;
-    border-radius: 0;
+/* Custom Cursor CSS (Global) - Only for devices with fine pointers (mouse) */
+@media (pointer: fine) {
+    body, a, button, .brutal-hover, .neo-btn, select, label { cursor: none !important; }
+    #custom-cursor {
+        position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+        border: 4px solid #000; border-radius: 50%;
+        background-color: #FFD700;
+        transform: translate(-50%, -50%);
+        pointer-events: none; z-index: 999999;
+        transition: transform 0.1s ease, background-color 0.1s ease, border-radius 0.1s ease;
+        box-shadow: 4px 4px 0px #000;
+    }
+    #custom-cursor.hover {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #FF4C4C;
+        border-radius: 0;
+    }
 }

@@ -31,36 +31,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $judul = $_POST['judul_materi'];
             $deskripsi = $_POST['hidden_deskripsi_materi'];
             $nama_file = '';
+            $upload_ok = true;
 
             if (isset($_FILES['file_materi']) && $_FILES['file_materi']['error'] === UPLOAD_ERR_OK) {
-                $materi_dir = 'uploads/materi/';
-                if (!is_dir($materi_dir)) mkdir($materi_dir, 0777, true);
-                $ext = pathinfo($_FILES['file_materi']['name'], PATHINFO_EXTENSION);
-                $nama_file = 'materi_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
-                move_uploaded_file($_FILES['file_materi']['tmp_name'], $materi_dir . $nama_file);
+                $ext = strtolower(pathinfo($_FILES['file_materi']['name'], PATHINFO_EXTENSION));
+                $allowed_ext = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'txt', 'mp4'];
+                if (!in_array($ext, $allowed_ext)) {
+                    $pesan = "Gagal: Ekstensi file tidak diizinkan!";
+                    $upload_ok = false;
+                } else {
+                    $materi_dir = 'uploads/materi/';
+                    if (!is_dir($materi_dir)) mkdir($materi_dir, 0777, true);
+                    $nama_file = 'materi_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
+                    move_uploaded_file($_FILES['file_materi']['tmp_name'], $materi_dir . $nama_file);
+                }
             }
 
-            $stmt = $pdo->prepare("INSERT INTO tb_materi (id_kelas, judul_materi, deskripsi, file_materi) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$id_kelas, $judul, $deskripsi, $nama_file]);
-            $pesan = "Materi berhasil ditambahkan!";
+            if ($upload_ok) {
+                $stmt = $pdo->prepare("INSERT INTO tb_materi (id_kelas, judul_materi, deskripsi, file_materi) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$id_kelas, $judul, $deskripsi, $nama_file]);
+                $pesan = "Materi berhasil ditambahkan!";
+            }
 
         } elseif ($_POST['action'] === 'tambah_tugas') {
             $judul = $_POST['judul_tugas'];
             $deskripsi = $_POST['hidden_deskripsi_tugas'];
             $deadline = $_POST['deadline_tugas'];
             $nama_file = '';
+            $upload_ok = true;
 
             if (isset($_FILES['file_tugas']) && $_FILES['file_tugas']['error'] === UPLOAD_ERR_OK) {
-                $tugas_dir = 'uploads/tugas/';
-                if (!is_dir($tugas_dir)) mkdir($tugas_dir, 0777, true);
-                $ext = pathinfo($_FILES['file_tugas']['name'], PATHINFO_EXTENSION);
-                $nama_file = 'tugas_ref_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
-                move_uploaded_file($_FILES['file_tugas']['tmp_name'], $tugas_dir . $nama_file);
+                $ext = strtolower(pathinfo($_FILES['file_tugas']['name'], PATHINFO_EXTENSION));
+                $allowed_ext = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'txt'];
+                if (!in_array($ext, $allowed_ext)) {
+                    $pesan = "Gagal: Ekstensi file tidak diizinkan!";
+                    $upload_ok = false;
+                } else {
+                    $tugas_dir = 'uploads/tugas/';
+                    if (!is_dir($tugas_dir)) mkdir($tugas_dir, 0777, true);
+                    $nama_file = 'tugas_ref_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
+                    move_uploaded_file($_FILES['file_tugas']['tmp_name'], $tugas_dir . $nama_file);
+                }
             }
 
-            $stmt = $pdo->prepare("INSERT INTO tb_tugas (id_kelas, judul_tugas, deskripsi, file_tugas, deadline) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$id_kelas, $judul, $deskripsi, $nama_file, $deadline]);
-            $pesan = "Tugas berhasil ditambahkan!";
+            if ($upload_ok) {
+                $stmt = $pdo->prepare("INSERT INTO tb_tugas (id_kelas, judul_tugas, deskripsi, file_tugas, deadline) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$id_kelas, $judul, $deskripsi, $nama_file, $deadline]);
+                $pesan = "Tugas berhasil ditambahkan!";
+            }
         }
     }
 }
@@ -221,25 +239,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file_jawaban']) && is
     $file = $_FILES['file_jawaban'];
     
     if ($file['error'] === UPLOAD_ERR_OK) {
-        $fileName = time() . '_' . basename($file['name']);
-        $targetDir = __DIR__ . '/uploads/tugas/';
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_ext = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'txt'];
         
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
-        
-        $targetFilePath = $targetDir . $fileName;
-        
-        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            $stmtInsert = $pdo->prepare("INSERT INTO tb_submission (id_tugas, nim, file_jawaban) VALUES (:id_tugas, :nim, :file_jawaban)");
-            $stmtInsert->execute([
-                'id_tugas' => $id_tugas,
-                'nim' => $nim,
-                'file_jawaban' => $fileName
-            ]);
-            $pesan = "Tugas berhasil dikumpulkan!";
+        if (!in_array($ext, $allowed_ext)) {
+            $pesan = "Gagal: Ekstensi file tidak diizinkan!";
         } else {
-            $pesan = "Gagal memindahkan file yang diunggah.";
+            $fileName = time() . '_' . basename($file['name']);
+            $targetDir = __DIR__ . '/uploads/tugas/';
+            
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            
+            $targetFilePath = $targetDir . $fileName;
+            
+            if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+                $stmtInsert = $pdo->prepare("INSERT INTO tb_submission (id_tugas, nim, file_jawaban) VALUES (:id_tugas, :nim, :file_jawaban)");
+                $stmtInsert->execute([
+                    'id_tugas' => $id_tugas,
+                    'nim' => $nim,
+                    'file_jawaban' => $fileName
+                ]);
+                $pesan = "Tugas berhasil dikumpulkan!";
+            } else {
+                $pesan = "Gagal memindahkan file yang diunggah.";
+            }
         }
     } else {
         $pesan = "Terjadi kesalahan saat mengunggah file. Kode error: " . $file['error'];
@@ -254,25 +279,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     
     if ($jenis_post == 'materi') {
         $file_materi = '';
+        $upload_ok = true;
         if (isset($_FILES['file_materi']) && $_FILES['file_materi']['error'] === UPLOAD_ERR_OK) {
-            $fileName = time() . '_' . basename($_FILES['file_materi']['name']);
-            $targetDir = __DIR__ . '/uploads/materi/';
-            if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
-            if (move_uploaded_file($_FILES['file_materi']['tmp_name'], $targetDir . $fileName)) {
-                $file_materi = $fileName;
+            $ext = strtolower(pathinfo($_FILES['file_materi']['name'], PATHINFO_EXTENSION));
+            $allowed_ext = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', 'jpg', 'jpeg', 'png', 'txt', 'mp4'];
+            if (!in_array($ext, $allowed_ext)) {
+                $pesan = "Gagal: Ekstensi file tidak diizinkan!";
+                $upload_ok = false;
+            } else {
+                $fileName = time() . '_' . basename($_FILES['file_materi']['name']);
+                $targetDir = __DIR__ . '/uploads/materi/';
+                if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
+                if (move_uploaded_file($_FILES['file_materi']['tmp_name'], $targetDir . $fileName)) {
+                    $file_materi = $fileName;
+                }
             }
         }
-        $stmtM = $pdo->prepare("INSERT INTO tb_materi (id_kelas, judul_materi, deskripsi, file_materi) VALUES (?, ?, ?, ?)");
-        $stmtM->execute([$id_kelas, $judul, $deskripsi, $file_materi]);
+        if ($upload_ok) {
+            $stmtM = $pdo->prepare("INSERT INTO tb_materi (id_kelas, judul_materi, deskripsi, file_materi) VALUES (?, ?, ?, ?)");
+            $stmtM->execute([$id_kelas, $judul, $deskripsi, $file_materi]);
+            header("Location: kelas_detail.php?id=" . $id_kelas . "&msg=success_post");
+            exit();
+        }
     } elseif ($jenis_post == 'tugas') {
         $deadline = $_POST['deadline'];
         $stmtT = $pdo->prepare("INSERT INTO tb_tugas (id_kelas, judul_tugas, deskripsi, deadline) VALUES (?, ?, ?, ?)");
         $stmtT->execute([$id_kelas, $judul, $deskripsi, $deadline]);
     }
     
-    // Refresh halaman agar data terbaru langsung muncul
-    header("Location: kelas_detail.php?id=" . $id_kelas . "&msg=success_post");
-    exit();
+    // Refresh halaman agar data terbaru langsung muncul jika tugas (karena materi redirectnya di atas)
+    if ($jenis_post == 'tugas' || ($jenis_post == 'materi' && $upload_ok)) {
+        header("Location: kelas_detail.php?id=" . $id_kelas . "&msg=success_post");
+        exit();
+    }
 }
 
 // Handle Form Submit: Buat Diskusi Baru

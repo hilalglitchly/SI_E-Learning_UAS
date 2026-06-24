@@ -4,6 +4,13 @@
     document.addEventListener('DOMContentLoaded', () => {
         if (!document.getElementById('custom-cursor')) return;
         const cursor = document.getElementById('custom-cursor');
+        
+        // Disable JS cursor on touch devices
+        if (window.matchMedia && !window.matchMedia("(pointer: fine)").matches) {
+            cursor.style.display = 'none';
+            return;
+        }
+
         document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
