@@ -1,12 +1,14 @@
-# Disable directory listing (Mencegah orang melihat daftar file dalam sebuah folder)
+# Disable directory listing
 Options -Indexes
 
-# Melindungi folder .git dan isinya dari akses publik
-<DirectoryMatch "^\.git">
-    Require all denied
-</DirectoryMatch>
-
-# Mencegah akses langsung ke file konfigurasi yang berawalan titik (seperti .env, .htaccess, .gitignore)
+# Cegah akses ke file yang diawali titik (.htaccess, .env, .gitignore)
 <FilesMatch "^\.">
-    Require all denied
+    Order allow,deny
+    Deny from all
 </FilesMatch>
+
+# Cegah akses ke folder .git dan seluruh isinya menggunakan mod_rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^\.git - [F,L]
+</IfModule>
