@@ -443,7 +443,7 @@ while (count($kelasList) < 12) {
             <div style="display: flex; flex-direction: column; gap: 2rem;">
                 <div class="neo-card brutal-hover" style="background-color: #000; border: 4px solid #000; box-shadow: 12px 12px 0px #000; padding: 0; overflow: hidden; transform: rotate(-0.5deg);">
                     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/zJSY8tbf_ys" title="Demo E-Learning Programming" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/0EdYaYIUOvA" title="Demo E-Learning Programming" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div style="text-align: center; margin-top: 1rem;">
