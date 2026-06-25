@@ -1,30 +1,50 @@
 <!-- Custom Cursor -->
 <div id="custom-cursor"></div>
 <script>
-    // --- 1. Sound Effect System (Web Audio API - 8-bit Retro Click) ---
+    // --- 1. Sound Effect System (Variasi File Audio Eksternal via RAM) ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    // --- 1. Sound Effect System (Variasi File Audio Eksternal) ---
-    const clickSounds = [
-        new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'), // Pop click
-        new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'), // Light click
-        new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3'), // Soft tap
-        new Audio('https://assets.mixkit.co/active_storage/sfx/1114/1114-preview.mp3')  // Tiny sweep click
+    const audioBuffers = [];
+    
+    const soundUrls = [
+        'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3', // Pop click
+        'https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3', // Light click
+        'https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3', // Soft tap
+        'https://assets.mixkit.co/active_storage/sfx/1114/1114-preview.mp3'  // Tiny sweep click
     ];
 
-    // Preload audio files & atur volume
-    clickSounds.forEach(audio => {
-        audio.volume = 0.6; // Volume 60%
-        audio.load(); // Memaksa browser mendownload sebagian data di awal (preload)
+    // Download audio sekali saja dan simpan murni di RAM (AudioBuffer)
+    soundUrls.forEach(url => {
+        fetch(url)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+                audioBuffers.push(audioBuffer);
+            })
+            .catch(err => console.log('Gagal memuat audio:', err));
     });
 
     function playClickSound() {
-        // Memilih satu suara secara acak (bervariasi tiap klik)
-        const randomIndex = Math.floor(Math.random() * clickSounds.length);
-        const sound = clickSounds[randomIndex].cloneNode(true); // Clone agar suara bisa bertumpuk tanpa terputus
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
         
-        sound.volume = 0.6;
-        sound.play().catch(err => console.log('Audio diputar otomatis diblokir browser: ', err));
+        // Jangan putar jika audio belum selesai di-download
+        if (audioBuffers.length === 0) return; 
+
+        // Memilih satu suara secara acak
+        const randomIndex = Math.floor(Math.random() * audioBuffers.length);
+        const source = audioCtx.createBufferSource();
+        source.buffer = audioBuffers[randomIndex];
+        
+        // Mengatur volume
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0.6; 
+        
+        source.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        // Langsung putar dari RAM (0 Latency, anti-spam failure)
+        source.start(0);
     }
 
     // Menggunakan mousedown agar lebih responsif sebelum tombol benar-benar dilepas
