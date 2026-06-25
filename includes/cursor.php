@@ -4,37 +4,28 @@
     // --- 1. Sound Effect System (Web Audio API - 8-bit Retro Click) ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+    // --- 1. Sound Effect System (Variasi File Audio Eksternal) ---
+    const clickSounds = [
+        new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3'), // Pop click
+        new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'), // Light click
+        new Audio('https://assets.mixkit.co/active_storage/sfx/2570/2570-preview.mp3'), // Soft tap
+        new Audio('https://assets.mixkit.co/active_storage/sfx/1114/1114-preview.mp3')  // Tiny sweep click
+    ];
+
+    // Preload audio files & atur volume
+    clickSounds.forEach(audio => {
+        audio.volume = 0.6; // Volume 60%
+        audio.load(); // Memaksa browser mendownload sebagian data di awal (preload)
+    });
+
     function playClickSound() {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
+        // Memilih satu suara secara acak (bervariasi tiap klik)
+        const randomIndex = Math.floor(Math.random() * clickSounds.length);
+        const sound = clickSounds[randomIndex];
         
-        // Membuat suara "klik" plastik/mekanis realistis menggunakan White Noise
-        const bufferSize = audioCtx.sampleRate * 0.015; // Sangat singkat: 15 milidetik
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1; // Menghasilkan noise (statis)
-        }
-        
-        const noiseSource = audioCtx.createBufferSource();
-        noiseSource.buffer = buffer;
-        
-        // Filter agar suaranya tajam seperti plastik (Highpass filter)
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.value = 4000;
-        
-        // Membungkus suara agar langsung menghilang (Envelope)
-        const gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.015);
-        
-        noiseSource.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        noiseSource.start();
+        // Reset waktu ke 0 agar suara bisa ditumpuk (diputar cepat berturut-turut)
+        sound.currentTime = 0;
+        sound.play().catch(err => console.log('Audio diputar otomatis diblokir browser: ', err));
     }
 
     document.addEventListener('click', function(e) {
