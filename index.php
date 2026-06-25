@@ -441,17 +441,15 @@ while (count($kelasList) < 12) {
         <div style="max-width: 1000px; margin: 0 auto;">
             <h2 class="section-title" style="text-align: center; margin-bottom: 4rem; border: none; width: 100%;">❓ <span style="background-color: #FFD700; color: #000; padding: 0 15px; display: inline-block; transform: rotate(1deg); border: 4px solid #000; box-shadow: 6px 6px 0px #000;">FAQ & Cara Kerja</span></h2>
             <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div class="neo-card brutal-hover" style="background-color: #FFF; border: 4px solid #000; box-shadow: 8px 8px 0px #000; transform: rotate(-1deg);">
-                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.8rem; text-transform: uppercase; color: #000;">1. Bagaimana cara mulai belajar?</h3>
-                    <p style="font-size: 1.1rem; font-weight: 600; color: #333; line-height: 1.5;">Anda cukup mengeklik tombol "Daftar", isi data diri, lalu pilih kelas dari "Katalog Kelas". Setelah itu Anda bisa langsung menonton video materi dan mengerjakan tugas!</p>
+                <div class="neo-card brutal-hover" style="background-color: #000; border: 4px solid #000; box-shadow: 12px 12px 0px #000; padding: 0; overflow: hidden; transform: rotate(-0.5deg);">
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="https://www.youtube.com/embed/zJSY8tbf_ys" title="Demo E-Learning Programming" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
-                <div class="neo-card brutal-hover" style="background-color: #FFF; border: 4px solid #000; box-shadow: 8px 8px 0px #000; transform: rotate(1.5deg);">
-                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.8rem; text-transform: uppercase; color: #000;">2. Apakah sertifikat tersedia?</h3>
-                    <p style="font-size: 1.1rem; font-weight: 600; color: #333; line-height: 1.5;">Tentu saja! Setelah Anda menyelesaikan seluruh materi dan tugas dengan nilai memuaskan, sertifikat digital kelulusan akan otomatis tersedia di profil Anda.</p>
-                </div>
-                <div class="neo-card brutal-hover" style="background-color: #FFF; border: 4px solid #000; box-shadow: 8px 8px 0px #000; transform: rotate(-0.5deg);">
-                    <h3 style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.8rem; text-transform: uppercase; color: #000;">3. Bagaimana jika saya kesulitan memahami materi?</h3>
-                    <p style="font-size: 1.1rem; font-weight: 600; color: #333; line-height: 1.5;">Setiap kelas memiliki fitur Forum Diskusi interaktif. Anda dapat bertanya langsung di sana, dan pengajar serta murid lain akan dengan senang hati membantu Anda.</p>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <p style="font-size: 1.2rem; font-weight: 800; background-color: #FFF; padding: 1rem 2rem; border: 3px solid #000; display: inline-block; box-shadow: 4px 4px 0px #000;">
+                        Tonton video panduan di atas untuk memahami seluruh fitur dan kemudahan belajar di platform kami! 🚀
+                    </p>
                 </div>
             </div>
         </div>
