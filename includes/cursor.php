@@ -8,22 +8,33 @@
         if (audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
-        const oscillator = audioCtx.createOscillator();
+        
+        // Membuat suara "klik" plastik/mekanis realistis menggunakan White Noise
+        const bufferSize = audioCtx.sampleRate * 0.015; // Sangat singkat: 15 milidetik
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1; // Menghasilkan noise (statis)
+        }
+        
+        const noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = buffer;
+        
+        // Filter agar suaranya tajam seperti plastik (Highpass filter)
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 4000;
+        
+        // Membungkus suara agar langsung menghilang (Envelope)
         const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.015);
         
-        // Subtle Mouse Click Effect
-        oscillator.type = 'triangle';
-        oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.03);
-        
-        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
-        
-        oscillator.connect(gainNode);
+        noiseSource.connect(filter);
+        filter.connect(gainNode);
         gainNode.connect(audioCtx.destination);
         
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.03);
+        noiseSource.start();
     }
 
     document.addEventListener('click', function(e) {
