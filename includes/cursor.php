@@ -21,15 +21,16 @@
     function playClickSound() {
         // Memilih satu suara secara acak (bervariasi tiap klik)
         const randomIndex = Math.floor(Math.random() * clickSounds.length);
-        const sound = clickSounds[randomIndex];
+        const sound = clickSounds[randomIndex].cloneNode(true); // Clone agar suara bisa bertumpuk tanpa terputus
         
-        // Reset waktu ke 0 agar suara bisa ditumpuk (diputar cepat berturut-turut)
-        sound.currentTime = 0;
+        sound.volume = 0.6;
         sound.play().catch(err => console.log('Audio diputar otomatis diblokir browser: ', err));
     }
 
-    document.addEventListener('click', function(e) {
-        const target = e.target.closest('a, button, input[type="submit"], input[type="button"], .brutal-hover, .neo-btn, select, label');
+    // Menggunakan mousedown agar lebih responsif sebelum tombol benar-benar dilepas
+    document.addEventListener('mousedown', function(e) {
+        // Seleksi yang sangat luas untuk menangkap semua interaksi
+        const target = e.target.closest('a, button, input[type="submit"], input[type="button"], input[type="radio"], input[type="checkbox"], select, label, .brutal-hover, .neo-btn, .neo-box, .btn-small, .btn-accent, .nav-item, summary, .course-card');
         if (target) {
             playClickSound();
         }
