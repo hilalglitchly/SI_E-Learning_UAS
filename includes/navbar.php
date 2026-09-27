@@ -36,6 +36,8 @@ $username = $_SESSION['username'] ?? '';
             <li><a href="laporan.php" style="color: #000;" class="<?= $current_page === 'laporan.php' ? 'active' : '' ?>"><i class='bx bxs-report'></i> LAPORAN</a></li>
         <?php endif; ?>
         
+        <li><a href="forum.php" style="color: #000;" class="<?= strpos($current_page, 'forum') !== false ? 'active' : '' ?>"><i class='bx bx-message-rounded-dots'></i> FORUM</a></li>
+
         <?php if (isset($_SESSION['id_user'])): ?>
             <li><a href="profil.php" style="color: #000;" class="<?= $current_page === 'profil.php' ? 'active' : '' ?>"><i class='bx bxs-user-circle'></i> AKUN</a></li>
         <?php else: ?>
